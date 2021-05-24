@@ -1,17 +1,3 @@
-// Copyright 2019 Arindam Hazra aka Xynox <https://arindamz.github.io/>
-// 
-// Licensed under the Apache License, Version 2.0(the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-//     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 const { Command } = require('discord-akairo');
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
@@ -25,8 +11,7 @@ class GuildInfo extends Command {
             description: {
                 content: 'Displays information about the server.'
             },
-            ratelimit: 2,
-            typing: true
+            ratelimit: 2
         });
     }
 
@@ -80,13 +65,6 @@ class GuildInfo extends Command {
                 `**❯ Time Created:** ${moment(message.guild.createdTimestamp).format('LT')} ${moment(message.guild.createdTimestamp).format('LL')} (${moment(message.guild.createdTimestamp).fromNow()})`,
                 '\u200b'
             ])
-        //     .addField('__Member Presence__', [
-        //        `**❯ Online:** ${members.filter(member => member.presence.status === 'online').size}`,
-        //        `**❯ Idle:** ${members.filter(member => member.presence.status === 'idle').size}`,
-        //        `**❯ Do Not Disturb:** ${members.filter(member => member.presence.status === 'dnd').size}`,
-        //        `**❯ Offline:** ${members.filter(member => member.presence.status === 'offline').size}`,
-        //        '\u200b'
-        //    ])
             .addField('__Server Statistics__', [
                 `**❯ Members:** ${message.guild.memberCount}`,
                 `**❯ Channels:** ${message.guild.channels.cache.size}`,
@@ -94,15 +72,17 @@ class GuildInfo extends Command {
                 `**❯ Roles:** ${roles.length}`,
                 '\u200b'
             ])
-            .addField('__Highlights__', [
+            .addField('__More Statistics__', [
                 `**❯ Boosts:** ${message.guild.premiumTier ? `Level ${message.guild.premiumTier}` : 'Level 0'} with ${message.guild.premiumSubscriptionCount || '0'} boosts`,
                 `**❯ Explicit Filter:** ${filterLevels[message.guild.explicitContentFilter]}`,
                 `**❯ Verification Level:** ${verificationLevels[message.guild.verificationLevel]}`,
-                `**❯ Features Unlocked:** ${message.guild.features || 'Nothing has unlocked yet'}`,
+                `**❯ Features Unlocked:** ${message.guild.features || 'Nothing has unlocked yet!'}`,
                 '\u200b'
             ])
-            .setFooter(`Thanks for using ${this.client.user.username}`)
-            .setTimestamp();
+            .setFooter(
+                `${this.client.user.username} is made with ❤️`,
+                `https://cdn.discordapp.com/emojis/805614116937007165.png?v=1`
+            );
         message.channel.send(embed);
 
     }

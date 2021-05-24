@@ -5,7 +5,6 @@ module.exports = class Reload extends Command {
         super('reload', {
             aliases: ['reload'],
             ownerOnly: true,
-            typing: true,
             clientPermissions: ['SEND_MESSAGES', 'ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS'],
             description: {
                 content: 'Reload a command/listener/inhibitor',
@@ -25,13 +24,14 @@ module.exports = class Reload extends Command {
         })
     }
     async exec(message, { things }) {
+
         try{
             await things.reload()
             message.react("<:check:753484699237613630>")
         }
         catch(err){
             const embed = new MessageEmbed()
-            .addField(`Error Reloading ${stuff.id}`, `\`\`\`js\n${err}\`\`\``)
+                .addField(`<a:RedTick:760514410115498025> Error Reloading ${stuff.id}`, `\`\`\`js\n${err}\`\`\``)
             await message.channel.send(embed)
         }
     }

@@ -1,41 +1,35 @@
-// Copyright 2019 Arindam Hazra aka Xynox <https://arindamz.github.io/>
-// 
-// Licensed under the Apache License, Version 2.0(the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-//     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 const { Command } = require('discord-akairo');
-const util = require('util');
+const { MessageAttachment } = require('discord.js');
+const { Type } = require('@anishshobith/deeptype');
+const { inspect } = require('util');
 
 class EvalCommand extends Command {
     constructor() {
         super('eval', {
-            aliases: ['eval', 'e'],
-            category: 'Bot Owner Only',
-            typing: true,
+            aliases: ['eval', 'evaluate', 'e', 'ev'],
+            ownerOnly: true,
             quoted: false,
-            args: [
-                {
-                    id: 'code',
-                    match: 'content'
-                }
-            ]
-        });
+            channel: 'guild',
+            category: "Bot Owner Only",
+            args: [{
+                id: 'code', type: 'string', match: 'content', default: null, 
+                    prompt: {
+                        start: `Please provide an expression for me to evaluate`,
+                        retry: `Please provide an expression for me to evaluate`,    
+                    } 
+            }],
+            description: {
+                usage: 'eval [ code ]',
+                examples: ['eval this.client'],
+                description: 'Evaluates JavaScript code'
+            },
+            ratelimit: 2,
+            
+        })
     }
 
-    async exec(message, { code }) {
-
-        if (message.author.id !== "594853883742912512") return message.reply("**Only `Bot Owner` can run this command.**");	
-        
-        if (!code) return message.util.reply('No code provided!');
+	async exec(message, { code }) {
+        if (!code) return message.channel.reply('No code provided!');
 
         const evaled = {};
         const logs = [];
@@ -45,9 +39,9 @@ class EvalCommand extends Command {
         const tokenRegex = new RegExp(`${token}|${rev}`, 'g');
         const cb = '```';
 
-        const print = (...a) => { // eslint-disable-line no-unused-vars
+        const print = (...a) => { 
             const cleaned = a.map(obj => {
-                if (typeof o !== 'string') obj = util.inspect(obj, { depth: 1 });
+                if (typeof o !== 'string') obj = channel.inspect(obj, { depth: 1 });
                 return obj.replace(tokenRegex, '[TOKEN]');
             });
 
@@ -66,6 +60,9 @@ class EvalCommand extends Command {
                 cb,
                 `${title}${cb}js`,
                 evaled.output,
+                cb,
+                `⭐\u2000**Type**:${cb}js`,
+                new Type(evaled.output).is,
                 cb
             ]);
         };
@@ -73,8 +70,9 @@ class EvalCommand extends Command {
         try {
             let output = eval(code);
             if (output && typeof output.then === 'function') output = await output;
+            const oldType = output;
 
-            if (typeof output !== 'string') output = util.inspect(output, { depth: 0 });
+            if (typeof output !== 'string') output = inspect(output, { depth: 0 });
             output = `${logs.join('\n')}\n${logs.length && output === 'undefined' ? '' : output}`;
             output = output.replace(tokenRegex, '[TOKEN]');
 
@@ -86,6 +84,9 @@ class EvalCommand extends Command {
                 cb,
                 `📤\u2000**Output**${cb}js`,
                 output,
+                cb,
+                `⭐\u2000**Type**:${cb}js`,
+                new Type(oldType).is,
                 cb
             ]);
 
@@ -119,5 +120,4 @@ class EvalCommand extends Command {
         }
     }
 }
-
 module.exports = EvalCommand;

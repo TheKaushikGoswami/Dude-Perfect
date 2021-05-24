@@ -1,17 +1,3 @@
-// Copyright 2019 Arindam Hazra aka Xynox <https://arindamz.github.io/>
-// 
-// Licensed under the Apache License, Version 2.0(the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-//     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 const { Command, version: vakairo } = require('discord-akairo');
 const { Message, MessageEmbed, version: djs } = require('discord.js');
 const { version } = require('../../../package.json');
@@ -26,8 +12,7 @@ class About extends Command {
             category: 'Utilities',
             description: {
                 content: 'Displays information about the bot.'
-            },
-            typing: true
+            }
         });
     }
 
@@ -42,12 +27,12 @@ class About extends Command {
                 `**${this.client.user.username} is made with ❤️**
                 **${this.client.user.username}** is a bot that can do most of the things that everything you require for making a better and better Discord Server.
                 `)
-            .addField('__General__', [
+            .addField('__General Details__', [
                 `**❯ Client:** ${this.client.user.tag} (\`${this.client.user.id}\`)`,
                 `**❯ Created On:** ${utc(this.client.user.createdTimestamp).format('Do MMMM YYYY HH:mm:ss')}`,
                 `**❯ Uptime:** ${ms(this.client.uptime, { long: true })}.`,
                 `**❯ Devs:** Anish, Hound, Kartik, Piyush & Xynox.`,
-                '\u200b'
+                '\u200b' 
             ])
             .addField('__Frontend Details__', [
                 `**❯ Users:** ${this.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString()}`,
@@ -64,7 +49,7 @@ class About extends Command {
                 '\u200b'
             ], true)
             .addField('__Check Out__', [
-                ` [**Support**](https://discord.gg/ZzbZpdw) • [**Invite**](https://discord.com/api/oauth2/authorize?client_id=759763855680602122&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.com%2Finvite%2FZzbZpdw&scope=bot) • [**GitHub**](https://github.com/Dude-Perfect-Discord-Bot)`,
+                ` [**Wiki**](https://github.com/Dude-Perfect-Discord-Bot/Dude-Perfect/wiki) • [**Invite**](http://bit.ly/dpdb_xynox) • [**Support**](https://discord.gg/ZzbZpdw) • [**GitHub**](https://github.com/Dude-Perfect-Discord-Bot/Dude-Perfect) • [**Donate**](https://www.patreon.com/arindamz)`,
                 '\u200b'
             ])
             .addField('__NOTE__', [
@@ -73,8 +58,10 @@ class About extends Command {
                 We have taken grants for using their artworks.`,
                 '\u200b'
             ])
-            .setFooter(`Thanks for using ${this.client.user.username}`)
-            .setTimestamp();
+            .setFooter(
+                `${this.client.user.username} is made with ❤️`,
+                `https://cdn.discordapp.com/emojis/805614116937007165.png?v=1`
+            );
     
         message.channel.send(embed);
     }

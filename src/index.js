@@ -9,6 +9,8 @@ const { AutoPoster } = require('topgg-autoposter');
 const { config } = require('dotenv');
 const { join } = require('path');
 
+require('./extensions/DudePerfectUser');
+
 config();
 class DudePerfectClient extends AkairoClient {
   constructor() {
@@ -19,14 +21,14 @@ class DudePerfectClient extends AkairoClient {
       disableMentions: 'everyone',
     });
 
-    // Stats
+    // Statistical Data recorded with the help other 3rd Party srevices.
     this.statCord = new StatcordClient({
       client: this,
       key: process.env.STATCORD_KEY,
     });
     this.dbl = new AutoPoster(process.env.TOP_GG_TOKEN, this);
 
-    // Handlers . . .
+    // Handler configuration . . .
     this.commandHandler = new CommandHandler(this, {
       prefix: process.env.PREFIX,
       blockBots: true,
@@ -35,11 +37,11 @@ class DudePerfectClient extends AkairoClient {
       handleEdits: true,
       defaultCooldown: 5000,
       commandUtil: true,
+      // Xynox, Piyush & Anish omly.
       ignoreCooldown: [
-        '259008949427109891',
-        '430236084744749058',
-        '371600898822111234',
+        '594853883742912512',
         '365644930556755969',
+        '259008949427109891',
       ],
       directory: join(__dirname, 'commands'),
     });
